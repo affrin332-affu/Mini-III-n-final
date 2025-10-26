@@ -1,5 +1,5 @@
 // Base URL for your backend API
-const API_BASE_URL = 'http://localhost:5501/api';
+const API_BASE_URL = 'https://mini-iii-n-final.onrender.com';
 
 // Welcome Page Elements
 const welcomePage = document.getElementById('welcome-page');
