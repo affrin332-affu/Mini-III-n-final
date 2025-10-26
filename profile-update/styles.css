@@ -1,0 +1,1489 @@
+/* --- 1. Global Variables and Body Styles --- */
+:root {
+    --text-color: #1a1a1a;
+    --header-bg: #ffffff;
+    --column-bg: #f1f1f1;
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --accent-color: #3b82f6; /* Blue for primary actions/accents */
+    --welcome-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+    --sidebar-width: 240px;
+    --glass-bg: rgba(255, 255, 255, 0.5); 
+
+    /* New/Updated variables for consistent styling */
+    --primary-button-bg: var(--accent-color);
+    --primary-button-hover-bg: #2563eb;
+    --secondary-button-bg: #e2e8f0;
+    --secondary-button-hover-bg: #cbd5e1;
+    --modal-bg-light: #ffffff;
+    --modal-bg-dark: #2c2c2c; /* Dark background for modals */
+    --high-priority-color: #ef4444; /* Red */
+    --medium-priority-color: #f59e0b; /* Orange */
+    --low-priority-color: #10b981; /* Green */
+
+    /* New role-specific colors */
+    --role-user-color: #6b7280; /* Gray */
+    --role-admin-color: var(--accent-color); /* Blue */
+}
+
+body.dark-mode {
+    --text-color: #f0f0f0;
+    --header-bg: #1e1e1e;
+    --column-bg: #2c2c2c;
+    --card-bg: #333333;
+    --border-color: #444444;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --glass-bg: rgba(30, 30, 30, 0.5);
+
+    --primary-button-bg: var(--accent-color);
+    --primary-button-hover-bg: #2563eb;
+    --secondary-button-bg: #444;
+    --secondary-button-hover-bg: #555;
+    --modal-bg-dark: #1e1e1e; /* Ensure dark modal BG is distinct */
+
+    /* Dark mode adjustments for role colors */
+    --role-user-color: #9ca3af; /* Lighter gray for dark mode */
+}
+
+body {
+    font-family: -apple-system, BlinkMacMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-color);
+    margin: 0;
+    min-height: 100vh; /* Ensure body takes full height for positioning */
+    
+    /* Set your desired background image */
+    background-image: url('images/background5.png'); /* Make sure you have this image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth dark mode transition */
+}
+
+/* Optional: background overlay for readability */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+}
+
+.hidden { display: none !important; }
+.functional-hide {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+.message { min-height: 20px; font-weight: 500; }
+.message.success { color: #10b981; } /* Green for success */
+.message.error { color: #ef4444; } /* Red for error */
+
+/* --- 2. Focus Window Login Page Styles --- */
+#focus-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#login-window {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.2);
+    text-align: center;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Initial State: Button Only */
+#unlock-button {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#unlock-button:hover {
+    transform: scale(1.05);
+}
+
+/* Expanded State: Form Visible */
+#login-window.expanded {
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 400px;
+}
+#login-window.expanded #unlock-button {
+    display: none;
+}
+#login-form-wrapper {
+    transition: all 0.4s ease 0.2s;
+    opacity: 1;
+    max-height: 500px;
+    
+}
+#login-form-wrapper.collapsed {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+/* Form Styles */
+#login-form-wrapper h2 { margin-top: 0; color: white; }
+#login-form-wrapper form { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+.input-container { position: relative; }
+#login-form-wrapper input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white; padding: 0.8rem; border-radius: 10px; font-size: 1rem;
+    width: 100%; box-sizing: border-box;
+}
+#login-form-wrapper input::placeholder { color: rgba(255,255,255,0.7); }
+#login-form-wrapper input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+#login-form-wrapper button {
+    padding: 0.8rem; border: none; border-radius: 10px; background-color: var(--accent-color);
+    color: white; font-weight: bold; cursor: pointer; font-size: 1rem;
+}
+.toggle-link { font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-top: 1.5rem; }
+.toggle-link a { color: white; text-decoration: none; font-weight: bold; }
+
+/* Success Animation */
+#login-window.success {
+    border-radius: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+}
+
+/* Sign-up container styles (now hidden, but kept for reference) */
+/* This block is likely unused if signup is integrated into login-form-wrapper */
+#signup-container { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px; 
+    padding: 2rem; 
+    background-color: var(--header-bg); 
+    border-radius: 8px; 
+    text-align: center; 
+    box-shadow: 0 4px 12px var(--shadow-color); 
+    z-index: 10;
+}
+#signup-container form { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+#signup-container input { padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background-color: var(--column-bg); color: var(--text-color); font-size: 1rem; }
+#signup-container button { padding: 0.75rem; border: none; border-radius: 6px; background-color: var(--accent-color); color: white; font-weight: bold; cursor: pointer; font-size: 1rem; }
+#signup-container hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+#signup-container a { color: var(--accent-color); text-decoration: none; }
+
+
+/* --- 3. Main App Layout --- */
+#app-layout { display: flex; height: 100vh; }
+
+#sidebar {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid var(--border-color);
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    transition: margin-left 0.3s ease-in-out;
+}
+#sidebar.collapsed { margin-left: calc(-1 * var(--sidebar-width)); }
+.sidebar-header { padding: 1rem; border-bottom: 1px solid var(--border-color); }
+.sidebar-header #logo { cursor: pointer; user-select: none; font-size: 1.5rem; font-weight: bold; }
+.sidebar-nav ul { list-style: none; padding: 0; margin: 1rem 0; }
+.sidebar-nav li a { display: block; padding: 0.75rem 1.5rem; color: var(--text-color); text-decoration: none; border-radius: 6px; margin: 0.25rem 0.5rem; }
+.sidebar-nav li a:hover { background-color: var(--column-bg); }
+.sidebar-nav li.active a { background-color: var(--accent-color); color: white; font-weight: 500; }
+
+#main-content {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column; 
+    overflow: hidden; /* Prevent main content from overflowing */
+}
+
+/* MODIFIED: HEADER LAYOUT TO USE FLEXBOX FOR BETTER ALIGNMENT */
+header {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex; /* Changed from grid */
+    justify-content: space-between; /* Ensures space between sections */
+    align-items: center;
+    padding: 1rem 2rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0;
+    gap: 0; /* Control spacing via search container margin */
+}
+#menu-toggle { font-size: 1.5rem; background: none; border: none; cursor: pointer; color: var(--text-color); }
+header .controls { display: flex; gap: 1rem; }
+header .controls button { 
+    background: none; 
+    border: 1px solid var(--border-color); 
+    border-radius: 6px; 
+    padding: 0.5rem; 
+    font-size: 1.25rem; 
+    cursor: pointer; 
+    line-height: 1; 
+    color: var(--text-color);
+    transition: background-color 0.2s, border-color 0.2s;
+}
+header .controls button:hover {
+    background-color: var(--column-bg);
+    border-color: var(--accent-color);
+}
+
+/* Attractive Priority Dropdown (search bar) */
+.search-container { display: flex; align-items: center; }
+
+#task-filter-priority {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(243,246,255,0.9));
+    border: 1px solid rgba(0,0,0,0.08);
+    color: var(--text-color);
+
+    padding: 0.45rem 2.2rem 0.45rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    transition: all 0.18s ease-in-out;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'><path fill='%236b7280' d='M7 10l5 5 5-5z'/></svg>"), linear-gradient(180deg, rgba(255,255,255,0), rgba(0,0,0,0));
+    background-repeat: no-repeat, repeat;
+    background-position: right 10px center, 0 0;
+}
+
+#task-filter-priority:focus {
+    outline: none;
+    border-color: rgba(59,130,246,0.95);
+    box-shadow: 0 6px 24px rgba(59,130,246,0.14), 0 2px 6px rgba(15,23,42,0.06) !important;
+    transform: translateY(-1px);
+}
+
+/* Hover makes the dropdown slightly lift */
+#task-filter-priority:hover { transform: translateY(-1px); }
+
+/* Dark-mode adjustments */
+body.dark-mode #task-filter-priority {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--text-color);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'><path fill='%23ffffff' d='M7 10l5 5 5-5z'/></svg>"), linear-gradient(180deg, rgba(255,255,255,0), rgba(0,0,0,0));
+}
+
+@media (max-width: 680px) {
+    #task-filter-priority { margin-left: 6px; padding-right: 1.8rem; font-size: 0.9rem; }
+}
+#signout-button { padding: 0.5rem 1rem; font-size: 1rem; }
+
+/* NEW: User Profile Dropdown Styles */
+.user-profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#user-menu-button {
+    background-color: var(--secondary-button-bg);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0.5rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+#user-menu-button.icon-only-button {
+    padding: 0.5rem; 
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    background-color: var(--secondary-button-bg);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#user-menu-button:hover {
+    background-color: var(--secondary-button-hover-bg);
+}
+
+#user-menu-button .user-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-color);
+}
+
+.dropdown-arrow {
+    display: none;
+}
+
+#user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0.5rem 0 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    z-index: 50;
+    min-width: 150px;
+}
+
+#user-dropdown-menu.hidden {
+    display: none;
+}
+
+#user-dropdown-menu li a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+#user-dropdown-menu li a:hover {
+    background-color: var(--column-bg);
+}
+
+/* Dashboard and Admin Dashboard containers */
+.dashboard-container { 
+    overflow: auto; 
+    flex-grow: 1; 
+    padding: 2rem; 
+    gap: 1.5rem; 
+    align-items: flex-start;
+}
+
+/* Specific layout for the main dashboard (3 columns) */
+#dashboard, #task-board {
+    display: flex; 
+    flex-direction: column;
+}
+#task-board { 
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 1.5rem; 
+    width: 100%; 
+    justify-content: flex-start;
+    align-items: flex-start; 
+}
+
+
+/* Specific layout for the admin dashboard (User Management, All Tasks Overview side-by-side) */
+#admin-dashboard-section {
+    display: flex; 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+}
+
+/* NEW: Profile Page Styles */
+#profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+}
+.profile-card-container {
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.profile-field {
+    margin-bottom: 1rem;
+}
+
+.profile-field label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.profile-field input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* Style for the save button on the profile page */
+#save-profile-btn {
+    background-color: var(--primary-button-bg);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#save-profile-btn:hover {
+    background-color: var(--primary-button-hover-bg);
+}
+
+.task-column {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px; 
+    padding: 1rem;
+    flex-shrink: 0; 
+    min-height: 300px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    display: flex;
+    flex-direction: column; 
+}
+
+/* Width for task columns in the main dashboard (3 columns) */
+#task-board .task-column {
+    flex: 1 1 calc(33.333% - 1rem); 
+    max-width: calc(33.333% - 1rem);
+    min-width: 280px; 
+}
+
+/* Width for task columns in the admin dashboard (User Management, All Tasks Overview - side-by-side) */
+#admin-dashboard-section .task-column {
+    flex: 1 1 calc(50% - 0.75rem); 
+    max-width: calc(50% - 0.75rem);
+    min-width: 300px;
+}
+
+.task-column h2 { 
+    font-size: 1.1rem; 
+    margin-top: 0; 
+    padding-bottom: 1rem; 
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem; 
+}
+.task-card { 
+    background-color: var(--card-bg); 
+    border-radius: 6px; 
+    padding: 1rem; 
+    margin-top: 0.5rem; 
+    box-shadow: 0 2px 4px var(--shadow-color); 
+    border-left: 4px solid transparent; 
+    cursor: grab; 
+    position: relative; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.task-card h3 {
+    margin: 0 0 0.5rem 0; 
+    font-size: 1rem;
+    font-weight: 600;
+}
+.task-card p { margin: 0.25rem 0; font-size: 0.85rem; opacity: 0.8; }
+.task-card.dragging { opacity: 0.5; }
+.priority-high { border-left-color: var(--high-priority-color); }
+
+/* Enhanced Profile Page Overrides and Animations */
+.profile-card-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2.25rem;
+    width: 100%;
+    max-width: 760px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 20px rgba(2,6,23,0.08);
+}
+
+.profile-header { text-align: center; margin-bottom: 1.75rem; }
+.profile-avatar{ width:96px;height:96px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-color);color:white;margin-bottom:0.5rem;}
+.profile-subtitle{ color:var(--text-secondary); margin-top:0.25rem; }
+
+.profile-form-animated{ opacity:0; transform:translateY(12px); animation:profileSlideIn 420ms ease forwards; }
+@keyframes profileSlideIn{ to{ opacity:1; transform:translateY(0); } }
+
+.profile-field{ margin-bottom:1.25rem; }
+.profile-field label{ display:block; font-weight:600; margin-bottom:0.5rem; color:var(--text-color); }
+.input-with-icon{ position:relative; display:flex; align-items:center; }
+.input-with-icon svg{ position:absolute; left:10px; color:var(--text-secondary); }
+.input-with-icon input, .input-with-icon textarea{ width:100%; padding:0.75rem 0.9rem 0.75rem 36px; border-radius:10px; border:1px solid var(--border-color); background:var(--card-bg); color:var(--text-color); box-sizing:border-box; }
+.input-with-icon textarea{ padding-left:12px; min-height:86px; padding-top:10px; padding-bottom:10px; }
+.input-with-icon input:focus, .input-with-icon textarea:focus{ outline:none; border-color:var(--accent-color); box-shadow:0 6px 18px rgba(59,130,246,0.08); }
+
+.double-grid{ display:flex; gap:0.5rem; }
+
+.profile-save-btn{ width:100%; padding:0.95rem; background:var(--accent-color); color:white; border:none; border-radius:10px; font-weight:600; display:inline-flex; gap:0.6rem; align-items:center; justify-content:center; cursor:pointer; transition:all 0.18s ease; }
+.profile-save-btn:disabled{ opacity:0.7; cursor:not-allowed; }
+.save-icon.loading{ animation:spin 1s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.profile-message-container{ min-height:40px; display:flex; align-items:center; justify-content:center; }
+.message { padding:0.5rem 0.75rem; border-radius:8px; font-size:0.95rem; display:inline-block; opacity:0; transform:translateY(-6px); transition:all 0.24s ease; }
+.message.show{ opacity:1; transform:translateY(0); }
+.message.success{ color:var(--success-color, #059669); border:1px solid rgba(5,150,105,0.12); background:rgba(5,150,105,0.06); }
+.message.error{ color:var(--error-color, #ef4444); border:1px solid rgba(239,68,68,0.12); background:rgba(239,68,68,0.04); }
+
+.profile-update-toast{ position:fixed; right:1.5rem; bottom:1.5rem; background:var(--accent-color); color:white; padding:0.75rem 1rem; border-radius:10px; display:flex; align-items:center; gap:0.6rem; box-shadow:0 8px 24px rgba(2,6,23,0.12); transform:translateX(120%); transition:transform 260ms cubic-bezier(.2,.9,.3,1); z-index:9999; }
+.profile-update-toast.show{ transform:translateX(0); }
+
+/* small responsive tweak */
+@media (max-width:720px){ .double-grid{ flex-direction:column; } .profile-card-container{ padding:1.25rem; } }
+
+/* Avatar image preview inside profile card */
+.profile-avatar { position: relative; width: 96px; height: 96px; overflow: hidden; }
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: none; border-radius: 50%; }
+.profile-avatar.has-image img { display: block; }
+.profile-avatar.has-image .avatar-placeholder { display: none; }
+.avatar-placeholder { width: 100%; height: 100%; display: inline-block; color: white; }
+
+.priority-medium { border-left-color: var(--medium-priority-color); }
+.priority-low { border-left-color: var(--low-priority-color); }
+
+.delete-task-btn { 
+    position: absolute; 
+    top: 8px; 
+    right: 8px; 
+    background: none; 
+    border: none; 
+    color: var(--text-color); 
+    opacity: 0.4; 
+    cursor: pointer; 
+    font-size: 1.2rem; 
+    line-height: 1; 
+    padding: 0.25rem; 
+    border-radius: 50%; 
+    width: 24px; 
+    height: 24px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: opacity 0.2s, background-color 0.2s, transform 0.2s;
+}
+.delete-task-btn:hover { 
+    opacity: 1; 
+    background-color: var(--column-bg); 
+    transform: scale(1.1);
+}
+
+
+/* --- 4. ENHANCED Task Form --- */
+.task-form-container { 
+    padding: 2rem 2rem 0 2rem; 
+    background-color: var(--glass-bg); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem; 
+    border-radius: 12px; 
+    margin: 1.5rem 2rem 0; 
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+#add-task-form { 
+    display: flex; 
+    gap: 1rem; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* MODIFIED: Increased min-width for better alignment */
+.input-with-icon {
+    position: relative;
+    flex-grow: 1;
+    min-width: 300px; /* Increased from 200px */
+    background-color: var(--column-bg);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+.input-with-icon span {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+    opacity: 0.5;
+}
+#task-title {
+    background: none;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 0.8rem 0.8rem 40px; 
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--text-color);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#task-title:focus {
+    outline: none;
+    background-color: var(--card-bg);
+}
+
+.priority-dropdown-wrapper {
+    position: relative;
+}
+#task-priority {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--column-bg);
+    border: none;
+    padding: 0.8rem 2rem 0.8rem 1rem;
+    border-radius: 10px;
+    color: var(--text-color);
+    cursor: pointer;
+    min-width: 120px; 
+    transition: all 0.2s;
+}
+#task-priority:focus {
+    outline: none;
+    background-color: var(--card-bg);
+}
+.priority-dropdown-wrapper::after {
+    content: '▼';
+    font-size: 0.8rem;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+.date-input-wrapper { 
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--column-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    min-width: 200px;
+}
+.date-input-wrapper label {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+#task-due-date {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    outline: none;
+    flex-grow: 1;
+}
+
+.add-task-btn {
+    background-color: var(--primary-button-bg);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+.add-task-btn:hover {
+    background-color: var(--primary-button-hover-bg);
+}
+.add-task-btn .plus-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* --- NEW: Search Bar Styles (MODIFIED) --- */
+.search-container {
+    flex-grow: 0; /* Prevents it from taking all space */
+    width: 100%;
+    max-width: 400px; /* Constrains the search bar size */
+    margin: 0 auto; /* Centers the search bar */
+}
+
+#task-search {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+#task-search:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* --- NEW: Task Details Modal Styles --- */
+#task-details-modal .modal-content {
+    background-color: var(--modal-bg-dark); 
+    color: #f0f0f0; 
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
+    max-width: 550px;
+    width: 90%;
+    position: relative;
+    transform: translateY(0); 
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+body.dark-mode #task-details-modal .modal-content {
+    background-color: var(--modal-bg-dark);
+}
+/* Updated styling for task details modal content */
+#task-details-modal .modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#task-details-modal h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #f1f1f1;
+    word-wrap: break-word;
+    background-color: #ef4444; 
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.detail-item {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    background-color: #333333;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+.detail-item strong {
+    display: block;
+    font-weight: 600;
+    color: #f1f1f1;
+    opacity: 0.9;
+}
+.detail-item span {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+#modal-task-description {
+    width: 100%;
+    height: 120px;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    resize: vertical;
+    font-family: inherit;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#modal-task-description:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+#save-task-details-btn {
+    background-color: var(--primary-button-bg);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    float: right;
+}
+#save-task-details-btn:hover {
+    background-color: var(--primary-button-hover-bg);
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.8rem;
+    color: var(--text-color);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.close-button:hover {
+    color: var(--accent-color);
+    transform: rotate(90deg);
+}
+
+/* --- 5. ENHANCED Secret Vault Modal & Footer --- */
+#app-footer { 
+    text-align: center; 
+    padding: 1.5rem; 
+    font-size: 0.8rem; 
+    opacity: 0.7; 
+    margin-top: auto; 
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* General modal backdrop and content styles, applied to both task details and vault */
+.modal-backdrop { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+    transition: opacity 0.3s ease;
+    opacity: 1; 
+}
+.modal-backdrop.hidden {
+    opacity: 0;
+    pointer-events: none; 
+}
+
+.modal-content {
+    background-color: var(--modal-bg-light); 
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.2);
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    transform: translateY(0); 
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+body.dark-mode .modal-content {
+    background-color: var(--modal-bg-dark);
+}
+
+/* Specific Vault Modal Styles (overrides general modal-content) */
+.modal-content.vault-style {
+    background: #1e1e1e; 
+    color: #f0f0f0;
+    border: 1px solid #444;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+}
+.vault-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+.lock-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--accent-color);
+}
+#vault-password-display {
+    background: #111;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+    color: #0f0; 
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    letter-spacing: 0.5em; 
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+.file-upload-area {
+    border: 2px dashed #555;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.file-upload-area:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+/* NEW: Style to highlight the drop zone (used by JS for visual feedback) */
+.file-upload-area.highlight {
+    border-color: var(--accent-color);
+    background-color: rgba(59, 130, 246, 0.2); 
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    transition: all 0.2s ease;
+}
+
+#vault-file-input {
+    display: none; 
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; }
+.vault-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.vault-btn.primary {
+    background-color: var(--primary-button-bg);
+    color: white;
+}
+.vault-btn.primary:hover {
+    background-color: var(--primary-button-hover-bg);
+}
+.vault-btn.secondary {
+    background-color: var(--secondary-button-bg); 
+    color: var(--text-color); 
+}
+body.dark-mode .vault-btn.secondary {
+    background-color: #444;
+    color: #f0f0f0;
+}
+.vault-btn.secondary:hover {
+    background-color: var(--secondary-button-hover-bg);
+}
+
+/* --- NEW: File Storage Page Styles --- */
+#file-storage-page {
+    /* Ensure it takes up the available space within the main content */
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1.5rem;
+    overflow-y: auto; /* Allow scrolling for file list */
+}
+
+.file-upload-section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Ensure the drop zone and lists take up full width for clear visual structure */
+#drop-zone,
+#stored-files-list {
+    width: 100%;
+}
+
+/* Adjust button container for alignment (assuming button is inside file-upload-section) */
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Push button to the right */
+    margin-top: 1rem;
+}
+
+/* New styles for Admin Panel User Management and All Tasks Overview */
+/* Base user-card styling - focus on internal layout, not visual appearance */
+.user-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-card h3 {
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+}
+
+.user-role-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.user-role-control label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.role-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 1.5rem 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-color);
+    position: relative;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1em;
+}
+
+.role-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Dynamic colors for role dropdown */
+.role-select.role-user {
+    color: var(--role-user-color);
+    border-color: var(--role-user-color);
+}
+
+.role-select.role-admin {
+    color: var(--role-admin-color);
+    border-color: var(--role-admin-color);
+}
+
+.save-role-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    margin-left: 0.5rem;
+}
+
+.user-actions {
+    margin-top: 0.5rem;
+}
+
+.delete-user-btn {
+    background-color: var(--high-priority-color); 
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.delete-user-btn:hover {
+    background-color: #dc2626; 
+}
+
+/* Placeholder text for empty lists */
+.placeholder-text {
+    text-align: center;
+    opacity: 0.6;
+    padding: 1rem;
+    font-style: italic;
+}
+
+/* Styles for horizontal layout of cards within admin lists */
+#admin-users-list,
+#admin-all-tasks-list {
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+    justify-content: flex-start; 
+    align-items: flex-start;
+    width: 100%;
+    padding: 0; 
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Adjust card width within admin lists to allow multiple per row */
+#admin-users-list .user-card,
+#admin-all-tasks-list .task-card {
+    flex: 1 1 calc(33.333% - 1rem); 
+    min-width: 200px;
+    max-width: 350px; 
+    margin-top: 0; 
+    padding: 1rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color); 
+    border-left: 4px solid transparent; 
+    border-radius: 6px; 
+    box-shadow: 0 2px 4px var(--shadow-color);
+    box-sizing: border-box; 
+    margin-bottom: 0;
+}
+
+
+
+/* Specific adjustments for user-card within admin list to maintain internal vertical stacking */
+#admin-users-list .user-card {
+    display: flex;
+    flex-direction: column; 
+    gap: 0.5rem;
+}
+
+/* Specific adjustments for task-card within admin list to maintain internal vertical stacking */
+#admin-all-tasks-list .task-card {
+    display: flex;
+    flex-direction: column; 
+    gap: 0.5rem;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 900;
+        margin-left: calc(-1 * var(--sidebar-width)); 
+        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    }
+    #sidebar.collapsed {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+    #sidebar.expanded { 
+        margin-left: 0;
+    }
+    #menu-toggle {
+        display: block; 
+    }
+    header {
+        justify-content: flex-start; 
+        gap: 0.5rem;
+    }
+    .search-container {
+        margin: 0 0.5rem;
+    }
+    .dashboard-container {
+        flex-direction: column; 
+        align-items: center; 
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .task-column {
+        width: 100%; 
+        max-width: 400px; 
+    }
+    #add-task-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+    }
+    .input-with-icon, .priority-dropdown-wrapper, .date-input-wrapper {
+        width: 100%;
+        min-width: unset;
+    }
+    #add-task-form .add-task-btn {
+        width: 100%;
+    }
+    #task-details-modal .modal-content, .modal-content.vault-style {
+        padding: 1.5rem;
+    }
+    #task-details-modal h3 {
+        font-size: 1.5rem;
+    }
+
+    /* Adjust cards within admin lists for single column on small screens */
+    #admin-users-list,
+    #admin-all-tasks-list {
+        flex-wrap: wrap; 
+        overflow-x: hidden; 
+        justify-content: center; 
+    }
+
+    #admin-users-list .user-card,
+    #admin-all-tasks-list .task-card {
+        flex: 1 1 calc(100% - 1rem); 
+        max-width: calc(100% - 1rem);
+        min-width: unset; 
+        border-bottom: 1px solid var(--border-color); 
+    }
+    /* Remove bottom border for the very last card on small screens when stacked */
+    #admin-users-list .user-card:last-child,
+    #admin-all-tasks-list .task-card:last-child {
+        border-bottom: none;
+    }
+}
+/* Profile Page Styles */
+.profile-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.profile-field .char-count {
+    display: block;
+    text-align: right;
+    color: #888;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.profile-field input[type="date"],
+.profile-field input[type="tel"],
+.profile-field input[type="url"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+/* ========================================
+   PRIVATE VAULT STYLES
+   ======================================== */
+
+.private-vault-container {
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* Vault Tabs */
+.vault-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.vault-tab {
+    flex: 1;
+    padding: 0.75rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.vault-tab:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.vault-tab.active {
+    background: var(--accent-color);
+    color: white;
+}
+
+.vault-tab-content {
+    animation: fadeIn 0.3s ease;
+}
+
+.vault-tab-content.hidden {
+    display: none;
+}
+
+/* Vault Files List */
+#private-vault-files-list,
+#private-vault-passwords-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.vault-file-item,
+.vault-password-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.vault-file-item:hover,
+.vault-password-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.vault-item-info {
+    flex: 1;
+}
+
+.vault-item-name {
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 0.25rem;
+}
+
+.vault-item-meta {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.vault-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.vault-action-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.vault-action-btn.download {
+    background: #10b981;
+    color: white;
+}
+
+.vault-action-btn.download:hover {
+    background: #059669;
+}
+
+.vault-action-btn.delete {
+    background: #ef4444;
+    color: white;
+}
+
+.vault-action-btn.delete:hover {
+    background: #dc2626;
+}
+
+.vault-action-btn.show {
+    background: var(--accent-color);
+    color: white;
+}
+
+.vault-action-btn.show:hover {
+    background: #2563eb;
+}
+
+/* Password Item Specific */
+.vault-password-item {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.vault-password-details {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+.vault-password-value {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vault-password-value span {
+    flex: 1;
+    color: #0f0;
+}
+
+.vault-username {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .private-vault-container {
+        width: 95%;
+        max-height: 90vh;
+        padding: 1.5rem;
+    }
+
+    .vault-file-item,
+    .vault-password-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .vault-item-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
