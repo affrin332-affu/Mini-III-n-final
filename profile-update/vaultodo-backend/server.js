@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5501;
 // Middleware
 // CORS configuration: in development allow any origin to simplify local testing
 // In production, set process.env.ALLOWED_ORIGINS (comma-separated) to restrict origins.
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5501', 'http://127.0.0.1:5501'];
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5501', 'http://127.0.0.1:5501','https://vaulto-frontend.onrender.com'];
 const corsOptions = (process.env.NODE_ENV === 'production') ?
     { origin: allowedOrigins, methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true } :
     { origin: true, methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true };
